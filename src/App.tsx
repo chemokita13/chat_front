@@ -4,6 +4,7 @@ import axios from "axios";
 import { Base64 } from "js-base64";
 import DataComp from "./DataComp";
 import InfoComp from "./InfoComp";
+import { toast } from "sonner";
 
 export type Data = {
     msgsNumber: number;
@@ -42,6 +43,7 @@ function App() {
         const response = await axios.post("https://chat-analizer.fly.dev", {
             text: b64text,
         });
+        console.log(response.data);
         setData(response.data);
     };
 
@@ -63,7 +65,15 @@ function App() {
                     <InfoComp />
                     <form
                         className="flex flex-col container text-center"
-                        onSubmit={(e) => handleFormSubmit(e)}
+                        onSubmit={(e) =>
+                            toast.promise(handleFormSubmit(e), {
+                                loading:
+                                    "Loading (it may be a slow process)...",
+
+                                success: "Success!",
+                                error: "Error!",
+                            })
+                        }
                     >
                         <h2 className="p-5 font-bold">Upload the text here</h2>
                         <input
