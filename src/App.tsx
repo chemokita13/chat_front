@@ -23,7 +23,11 @@ export type Data = {
 
 function App() {
     const [text, setText] = useState<string>("");
-    const [data, setData] = useState<Data | null>(null);
+    const [data, setData] = useState<Data | null>(
+        localStorage.getItem("data")
+            ? JSON.parse(localStorage.getItem("data") as string)
+            : null
+    );
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -45,6 +49,7 @@ function App() {
         });
         console.log(response.data);
         setData(response.data);
+        localStorage.setItem("data", JSON.stringify(response.data));
     };
 
     const hndleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -92,6 +97,17 @@ function App() {
                 </>
             )}
             {data != null && <DataComp dataToShow={data} />}
+            {data != null && (
+                <button
+                    onClick={() => {
+                        setData(null);
+                        localStorage.removeItem("data");
+                    }}
+                    className="bg-sky-600 border-2 border-sky-200 text-sky-400 w-4/5 font-extrabold text-4xl text-center rounded-lg m-5 p-2"
+                >
+                    Reset
+                </button>
+            )}
         </div>
     );
 }
