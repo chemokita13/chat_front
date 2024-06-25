@@ -1,5 +1,3 @@
-import React from "react";
-
 function InfoComp() {
     return (
         <div className="container text-center">

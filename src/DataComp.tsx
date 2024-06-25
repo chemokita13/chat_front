@@ -1,4 +1,3 @@
-import React from "react";
 import { Data } from "./App";
 import Chart from "react-google-charts";
 
